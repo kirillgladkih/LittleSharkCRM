@@ -9,6 +9,10 @@ make con
 ```shell
 php artisan key:generate && php artisan migrate
 ```
+#### Настройка админки
+```shell
+php php artisan orchid:admin
+```
 ### Последующий запуск
 ```shell
 make run
