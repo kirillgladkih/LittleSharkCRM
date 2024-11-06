@@ -1,0 +1,44 @@
+name: ${PROJECT_NAME}
+services:
+  fpm:
+    build:
+      context: php
+      dockerfile: Dockerfile
+    volumes:
+      - "./../application/:/var/www/html/"
+    environment:
+      - PHP_IDE_CONFIG=serverName=crm
+    networks:
+      - crm
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    volumes:
+      - "./../application/:/var/www/html/"
+      - "~/.LittleSharkCRM/.server/logs/nginx:/var/log/nginx"
+      - "./nginx/server.conf:/etc/nginx/conf.d/default.conf"
+    ports:
+      - "${NGINX_PORT}:80"
+    depends_on:
+      - fpm
+    networks:
+      - crm
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  postgres:
+    image: postgres:16.2-alpine
+    volumes:
+      - "~/.LittleSharkCRM/.server/data/postgres:/var/lib/postgresql/data"
+    ports:
+      - "${PGSQL_PORT}:5432"
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_USER}"
+      POSTGRES_USER: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    networks:
+      - crm
+networks:
+  crm:
+    driver: bridge
+    name: crm
