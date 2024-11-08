@@ -11,7 +11,7 @@ php artisan key:generate && php artisan migrate
 ```
 #### Настройка админки
 ```shell
-php php artisan orchid:admin
+php artisan orchid:admin
 ```
 ### Последующий запуск
 ```shell
@@ -21,3 +21,4 @@ make run
 ```shell
 make con
 ```
+Адрес админки: http://localhost:3001/admin/main
